@@ -353,9 +353,9 @@ export async function verifyForgotPasswordOtp(req, res){
         })
 
         return res.json({
-            message : "Verify otp Successfully",
-            error : true,
-            success : false
+            message : "OTP Verified Successfully",
+            error : false,
+            success : true
         })        
     } 
     catch (error) {
@@ -370,9 +370,11 @@ export async function verifyForgotPasswordOtp(req, res){
 // controller for reset-password
 export async function resetPassword(req, res){
     try {
-        const {email, newPassword, confirmPassword} = req.body;
+        const {email, password, confirmPassword} = req.body;
 
-        if(!email || !newPassword || !confirmPassword){
+        console.log(email, password, confirmPassword);
+
+        if(!email || !password || !confirmPassword){
             res.status(400).json({
                 message : "Please enter a field",
                 success : false,
@@ -390,7 +392,7 @@ export async function resetPassword(req, res){
             })
         }
 
-        if(newPassword != confirmPassword){
+        if(password != confirmPassword){
             return res.status(400).json({
                 message : "New Password and Confirm Password is not same",
                 success : false,
