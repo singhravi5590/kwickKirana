@@ -148,6 +148,10 @@ export async function loginController(req, res){
             sameSite : "None",
         }
 
+        const updateUser = await UserModel.findByIdAndUpdate({_id : user._id}, {
+            last_login_date : new Date(),
+        })
+
         res.cookie('accessToken', accessToken, cookieOption)
         res.cookie('refreshToken', refreshToken, cookieOption)
 

@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { IoMdEyeOff } from "react-icons/io";
 import { IoEye } from "react-icons/io5";
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUserDetais } from '../store/UserSlice';
+import { fetchUserdetails } from '../utils/fetchUser';
 
 const Login = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    
+    const dispatch = useDispatch();
 
     const [data, setData] = useState({
         email : "",
@@ -37,8 +42,12 @@ const Login = () => {
                 body : JSON.stringify(data),
             })
             const result = await response.json();
+            console.log(result);
             localStorage.setItem('accessToken', result.data.accessToken);
             localStorage.setItem('refreshToken', result.data.refreshToken);
+
+            const UserData = await fetchUserdetails();
+            dispatch(setUserDetais(UserData.data))
 
             const {error, message} = result;
             if(error){
@@ -53,7 +62,7 @@ const Login = () => {
             navigate("/");
         }
         catch(error){
-            console.log(error);
+            toast.success(error);
         } 
     }
 

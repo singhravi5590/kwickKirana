@@ -6,7 +6,7 @@ dotenv.config();
 
 export async function auth(req, res, next){
     try {
-        const token = req.cookies.accessToken || req?.header?.authorization.split(" ")[1];
+        const token = req.cookies.accessToken || req?.headers?.authorization;
         if(!token){
             return res.status(400).json({
                 message : "Provide token",
